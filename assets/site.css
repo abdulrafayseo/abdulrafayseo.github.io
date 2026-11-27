@@ -62,15 +62,98 @@
       border-bottom: none;
     }
 
+    /* =========================================================
+       LOGO
+
+       A mark plus a wordmark, not a line of bold text. The mark is
+       the same orange square with AR that the favicon and the share
+       card already use, so the tab, the link preview and the header
+       are recognisably one thing.
+
+       The two weights in the wordmark are what make it read as
+       drawn rather than typed: "Abdul" at 300 against "Rafay" at
+       800. Set solid, with no space between the words - the weight
+       change is the separator, which is why the missing space looks
+       deliberate here and looked like a typo before.
+
+       The words stay two spans of one link with no space between
+       them, so the link's accessible name is "AbdulRafay", exactly
+       what is on screen. An aria-label reading "Abdul Rafay" would
+       be kinder to read aloud and would break voice control, which
+       matches what a person says against the visible text.
+       ========================================================= */
     .logo {
       display: inline-flex;
       align-items: center;
+      gap: 11px;
       min-height: 44px;
+      color: #ffffff;
+      text-decoration: none;
+    }
+
+    .logo-mark {
+      display: grid;
+      place-items: center;
+      flex: none;
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      background: #ff5500;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      line-height: 1;
+      transition: transform 0.2s ease, background-color 0.2s ease;
+    }
+
+    .logo-word {
       font-size: 22px;
       font-weight: 800;
       letter-spacing: -0.5px;
-      color: #ffffff;
-      text-decoration: none;
+      line-height: 1;
+    }
+
+    /* The lighter half of the wordmark. 300 is loaded by the font link
+       in base.html; without it the browser synthesises a thin face and
+       the contrast between the two halves collapses. */
+    .logo-thin { font-weight: 300; }
+
+    .logo:hover .logo-mark,
+    .footer-logo:hover .logo-mark {
+      background: #ff6a1f;
+      transform: rotate(-6deg);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .logo-mark { transition: none; }
+      .logo:hover .logo-mark,
+      .footer-logo:hover .logo-mark { transform: none; }
+    }
+
+    /* On a phone the header holds the logo, the Get in touch pill and the menu
+       button, and at 375 the wordmark leaves them touching with no gap at all.
+       The mark carries the identity on its own there - it is the favicon, so it
+       is already what a phone user sees in their tab.
+
+       Hidden the sr-only way and not with display:none: the mark is
+       aria-hidden, so dropping the words from the tree as well would leave the
+       link to the home page with no accessible name at all. The footer has the
+       room and keeps the full lockup. */
+    @media (max-width: 560px) {
+      .logo .logo-word {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+      }
+
+      .logo { gap: 0; }
+      .logo .logo-mark { width: 38px; height: 38px; font-size: 15px; }
     }
 
     nav {
@@ -919,16 +1002,28 @@
       max-width: 400px;
     }
 
+    /* Same lockup, one size up, because the footer has the room and this
+       is the last thing on the page. */
     .footer-logo {
       display: inline-flex;
       align-items: center;
+      gap: 14px;
       min-height: 44px;
-      font-size: 28px;
-      font-weight: 800;
-      letter-spacing: -1px;
       color: #ffffff;
       text-decoration: none;
       margin-bottom: 12px;
+    }
+
+    .footer-logo .logo-mark {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      font-size: 18px;
+    }
+
+    .footer-logo .logo-word {
+      font-size: 28px;
+      letter-spacing: -1px;
     }
 
     .footer-tagline {
